@@ -55,8 +55,8 @@
 # hs_err_pid*
 # replay_pid*
 
-# #  KEYS.
-# *-input_secrets.yaml
+#  KEYS.
+*input_secrets.yaml
 
 # #  SPECIFIC FILES.
 
