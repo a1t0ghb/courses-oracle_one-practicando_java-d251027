@@ -41,5 +41,17 @@
         -->
         <exec.mainClass>a1t0ghb.courses_oracle_one.challenge_conversor_monedas.App</exec.mainClass>
     </properties>
+    <!-- Dependencies: 'https://maven.apache.org/repositories/dependencies.html'. -->
+    <dependencies>
+        <dependency>
+            <!-- [Maven repository] SnakeYAML - YAML parser: 'https://mvnrepository.com/artifact/org.yaml/snakeyaml'. -->
+            <!-- SnakeYAML basics: 'https://bitbucket.org/snakeyaml/snakeyaml/wiki/Documentation'. -->
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.4</version>
+            <!-- 'scope': default value is 'compile', if not explicitly declared. -->
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 </project>
 <!-- EOF. -->
