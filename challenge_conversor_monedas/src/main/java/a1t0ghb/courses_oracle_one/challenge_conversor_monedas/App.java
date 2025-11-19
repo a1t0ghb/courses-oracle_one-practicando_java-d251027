@@ -17,7 +17,9 @@ import java.io.IOException;                                         //  [Class -
 import org.yaml.snakeyaml.Yaml;                                     //  [Class] Parsing YAML files: 'https://javadoc.io/doc/org.yaml/snakeyaml/latest/org/yaml/snakeyaml/Yaml.html', 'https://bitbucket.org/snakeyaml/snakeyaml/wiki/Documentation#markdown-header-tutorial'.
 import java.util.Map;                                               //  [Interface] A key-value mapping: 'https://www.baeldung.com/java-hashmap#basic-usage', 'https://www.w3schools.com/java/java_map.asp', 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html'.
 // import java.util.stream.Stream;                                     //  [Interface] Stream as flexible return; e.g. 'one key' as a single String, or a collection, as a Set of Strings: 'https://www.baeldung.com/java-map-key-from-value#a-functional-approach', 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html'.
-// import java.util.List;                                              //  [Interface] Part of Java Collections, for ORDERED COLLECTIONS; to use it, create a class that implements this interface, such as 'ArrayList'. e.g. to manage lists from 'Map' instance for parameters. Ref. 'https://www.w3schools.com/java/java_list.asp', 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html'.
+import java.util.List;                                              //  [Interface] Part of Java Collections, for ORDERED COLLECTIONS; to use it, create a class that implements this interface, such as 'ArrayList'. e.g. to manage lists from 'Map' instance for parameters. Ref. 'https://www.w3schools.com/java/java_list.asp', 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html'.
+import java.util.ArrayList;                                         //  [Class] Class for implementation of 'List' Interface: 'https://www.w3schools.com/java/java_arraylist.asp'.
+import java.util.Scanner;                                           //  [Class] User input via console / terminal: 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Scanner.html', 'https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Java-Scanner-User-Input-example-String-next-int-long-char', 'https://www.baeldung.com/java-scanner', 'https://www.quora.com/How-do-you-use-a-scanner-for-a-loop-in-Java', 'https://medium.com/@AlexanderObregon/reading-multiple-lines-of-input-with-java-scanner-4901bb99cbbd'.
 
 //  IMPORTS - CUSTOM CLASSES AND CUSTOM INTERFACES.
 // import a1t0ghb.courses_oracle_one.challenge_conversor_monedas.utilities.UtilitiesForMapInterface;
@@ -36,40 +38,44 @@ public class App {
         //  ATTRIBUTES DECLARATION.
         //  - IMPORTANT: regarding primitive types (e.g. int, boolean, etc.), try ALWAYS instead to use their corresponding wrapper classes (e.g. Integer instead of int), to use proper methods, such as comparing and avoiding un-expected behaviours.
         //  - Example of un-intended behaviours: comparing integers. Ref.: 'https://medium.com/@wanisha2013/always-use-equals-to-compare-integer-objects-in-java-e35e469332aa'.
-        //  - Wrappers for primitives, for proper use of methods, such as '.equals()', or 'compare()': 'https://www.geeksforgeeks.org/java/wrapper-class-vs-primitive-data-types-in-java-with-io/'.
+        //  - Wrappers for primitives, for proper use of methods, such as '.equals()', or 'compare()': 'https://www.w3schools.com/java/java_wrapper_classes.asp', 'https://www.geeksforgeeks.org/java/wrapper-class-vs-primitive-data-types-in-java-with-io/'.
 
         //  List of input filepaths to process and get paramateres from: 'https://www.w3schools.com/java/java_arrays.asp'.
         var input_files_filepaths = new String[2];
+        // System.out.println(input_files_filepaths.getClass().getCanonicalName());            //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
         input_files_filepaths[0] = "src/main/resources/input_config.yaml";
         input_files_filepaths[1] = "src/main/resources/input_secrets.yaml";
         
-        // var menu = (String) """
-        // ********** ********** ********** ********** **********
-        // Bienvenido/a al Conversor de Moneda =].
+        var menu = (String) """
+        ********** ********** ********** ********** **********
+        Bienvenido/a al Conversor de Moneda =].
 
-        // 1) [USD] Dólar Americano        => [ARS] Peso Argentino.
-        // 2) [ARS] Peso Argentino         => [USD] Dólar Americano.
-        // 3) [USD] Dólar Americano        => [BRL] Real Brasileño.
-        // 4) [BRL] Real Brasileño         => [USD] Dólar Americano.
-        // 5) [USD] Dólar Americano        => [COP] Peso Colombiano.
-        // 6) [COP] Peso Colombiano        => [USD] Dólar Americano.
-        // 7) Salir.
+        1) [USD] Dólar Americano        => [ARS] Peso Argentino.
+        2) [ARS] Peso Argentino         => [USD] Dólar Americano.
+        3) [USD] Dólar Americano        => [BRL] Real Brasileño.
+        4) [BRL] Real Brasileño         => [USD] Dólar Americano.
+        5) [USD] Dólar Americano        => [COP] Peso Colombiano.
+        6) [COP] Peso Colombiano        => [USD] Dólar Americano.
+        7) Salir.
 
-        // Por favor elije una opción válida:
-        // """;
+        Por favor elije una opción válida; ej. '1' para convertir USD => ARS, '7' para salir, etc.:
+        """;
+        // System.out.println(menu.getClass().getCanonicalName());                             //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
 
-        // @SuppressWarnings("unused")
-        // var menu_currency = (String) """
-        // ********** ********** ********** ********** **********
-        // Por gavor ingresa la cantidad que deseas convertir:
-        // """;
+        var menu_currency = (String) """
+        ********** ********** ********** ********** **********
+        Por favor ingresa la cantidad que deseas convertir:
+        """;
+        // System.out.println(menu_currency.getClass().getCanonicalName());                    //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
 
-        // //  Wrapper for booleans: 'https://medium.com/@AlexanderObregon/switching-between-true-and-false-with-java-booleans-288e0ee3a331', 'https://labex.io/tutorials/java-how-to-check-if-a-boolean-variable-is-false-in-java-559933', 'https://www.geeksforgeeks.org/java/java-lang-boolean-class-java/'.
-        // var is_menu_exit = Boolean.FALSE;                                           //  Default status for exiting menu: false.
+        //  No need to use wrapper for booleans: 'https://medium.com/@AlexanderObregon/switching-between-true-and-false-with-java-booleans-288e0ee3a331', 'https://labex.io/tutorials/java-how-to-check-if-a-boolean-variable-is-false-in-java-559933', 'https://www.geeksforgeeks.org/java/java-lang-boolean-class-java/'.
+        var is_menu_exit = false;                                                           //  Default status for exiting menu: false.
+        // System.out.println(is_menu_exit.getClass().getCanonicalName());                     //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
 
         //  INITIALIZATION OF INSTANCES.
 
-        // var stream_from_map = new UtilitiesForMapInterface();                       //  Custom class for methods with instances of class 'Map'.
+        // var stream_from_map = new UtilitiesForMapInterface();                               //  Custom class for methods with instances of class 'Map'.
+        // System.out.println(stream_from_map.getClass().getCanonicalName());                     //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
 
         //  Prints current working directory: 'https://www.baeldung.com/java-current-directory'.
         System.out.println("-");
@@ -87,7 +93,8 @@ public class App {
         //  Loops through an Array, using for-each loop: 'https://www.w3schools.com/java/java_arrays_loop.asp', 'https://www.baeldung.com/java-for-loop'.
         for (String input_files_filepath : input_files_filepaths) {
 
-            var input_file = new File(input_files_filepath);                                                //  Can receive either a relative or absolute (i.e. starting with '/') path.
+            var input_file = new File(input_files_filepath);                                        //  Can receive either a relative or absolute (i.e. starting with '/') path.
+            // System.out.println(input_file.getClass().getCanonicalName());                           //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
             System.out.println("[LOG] Validating if file (with provided path) exists:");
             System.out.println("Filename: " + input_file.getName());
             System.out.println("Folder path: " + input_file.getParent());
@@ -115,15 +122,18 @@ public class App {
         System.out.println("-");
         // try {
 
-            InputStream stream_input_file = new FileInputStream(input_files_filepaths[0]);                  // Throws exception: 'FileNotFoundException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#%3Cinit%3E(java.lang.String)'.
+            var stream_input_file = (InputStream) new FileInputStream(input_files_filepaths[0]);            // Throws exception: 'FileNotFoundException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#%3Cinit%3E(java.lang.String)'.
+            // System.out.println(stream_input_file.getClass().getCanonicalName());                            //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
             System.out.println("[LOG] Reading '.yaml' file...");
             System.out.println(input_files_filepaths[0]);
             var yaml = new Yaml();
+            // System.out.println(yaml.getClass().getCanonicalName());                                         //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
             //  Method 'yaml.load()' returns an Java instance of class 'Object'.
             // Object data = yaml.load(stream_input_secrets);                                                  //  Approach 01: basic. Threat return as a 'generic' Object.
             // Map<String, Object> data = yaml.load(stream_input_secrets);                                     //  Approach 02: recommended. CAST into a instance of clas 'Map' for dictionary-like behaviour; i.e. key-value map / dictionary, usually key as String, and value as an Object.
             // Map<String, Object> data = (Map<String, Object>) yaml.load(stream_input_secrets);               //  Approach 03: more explicit variable declaration with CASTING.
             var data = (Map<String, Object>) yaml.load(stream_input_file);                                  //  Approach 04: practical approach with 'var' declaration, yet still recommended, including proper casting. to Map<String, Object< in this case.
+            // System.out.println(data.getClass().getCanonicalName());                                         //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
             // System.out.println(data);
             stream_input_file.close();                                                                      //  Manual close. Consider using 'try-with-resources'. Throws exception: 'IOException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#close()'.
 
@@ -135,6 +145,7 @@ public class App {
         //     System.out.println(e.getMessage());                                                             //  Print error details.
         // }
         var parameters = (Map<String, Object>) data.get("parameters");
+        // System.out.println(parameters.getClass().getCanonicalName());                                       //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
         System.out.println(parameters);
         System.out.println();
 
@@ -143,16 +154,33 @@ public class App {
         System.out.println("-");
         System.out.println("[LOG] Getting list of options for currencies conversion...");
         var menu_options = (Map<String, Object>) parameters.get("menu_options");
+        // System.out.println(menu_options.getClass().getCanonicalName());                                     //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
         System.out.println(menu_options);
         System.out.println();
 
+        // //  [DEBUG] Drilling through inner instances of 'Map' menu_options.
         // System.out.println("-");
+        // //  Prints all Map key-value pairs, through a for loop.
         // for (String i : menu_options.keySet()) {
         //     System.out.println("Key: " + i + " | Value: " + menu_options.get(i));
         // }
-        // var temp1 = (List<?>) menu_options.get("1");
-        // System.out.println(temp1);
-        // System.out.println(temp1.get(0));
+        // //  Example: accessing 'List' of exchange rates parameters for option 1; e.g. USD => ARS.
+        // //  - How to access a list item: 'https://www.w3schools.com/java/java_list.asp'.
+        // var currency_options_1 = (List<?>) menu_options.get("1");
+        // //  Note: get Class name, to understand what class type returns method '.get()' from Map instance.
+        // System.out.println(currency_options_1.getClass().getCanonicalName());                                //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+        // System.out.println(currency_options_1);
+        // //  Example: accessing 'from' currency for conversion; i.e. 'List' position '0'.
+        // var currency_1_from = (String) currency_options_1.get(0);
+        // System.out.println(currency_1_from.getClass().getCanonicalName());                                   //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+        // System.out.println(currency_1_from);
+        // System.out.println();
+        // //  NOTE: appropiate workflow for drilling through objects from YAML imports:
+        // //  - Do CASTING INCREMENTALLY; i.e. refer to objects with 'generic' classes such as 'Object' or '?', until the very end, right before you access object. Example:
+        // //    a. YAML 1st level: Map<String, Object> for 'parameters'; {parameters: ...}. Key as String, but value as Object, since it has all other YAML data (of different types).
+        // //    b. YAML 2nd level: Map<String, Object> for 'menu_options'; {menu_options: ...}. Key as String, but values still as Object, to GRADUALLY / INCREMENTALLY cast it, as required. 
+        // //    c. YAML 3rd level (example for option '1'): List<?> for 'currency_options_1'; {1: ...}. Values for option '1', are a 'List'; e.g. ['USD', 'ARS']. Although we know its a List of Strings (i.e. 'List<String>'), since we don't access items YET, we leave it as 'List<?>'.
+        // //    d. YAML 4th level (option '1', 'from' currency; i.e. List position '0'): (String) to proper CAST list object in position 0; ['USD', 'ARS']. Finally, since we are accessing the object and we know it's a String, we do the proper CASTING with '(String)'.
 
         //  Loads '.yaml' file: secrets.
         //  - Uses SnakeYAML library: 'https://bitbucket.org/snakeyaml/snakeyaml/wiki/Documentation'.
@@ -160,11 +188,14 @@ public class App {
         System.out.println("-");
         // try {
 
-            InputStream stream_input_file_secrets = new FileInputStream(input_files_filepaths[1]);          // Throws exception: 'FileNotFoundException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#%3Cinit%3E(java.lang.String)'.
+            var stream_input_file_secrets = (InputStream) new FileInputStream(input_files_filepaths[1]);    // Throws exception: 'FileNotFoundException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#%3Cinit%3E(java.lang.String)'.
+            // System.out.println(stream_input_file_secrets.getClass().getCanonicalName());                    //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
             System.out.println("[LOG] Reading '.yaml' file...");
             System.out.println(input_files_filepaths[1]);
             var yaml_secrets = new Yaml();
+            // System.out.println(yaml_secrets.getClass().getCanonicalName());                                 //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
             var data_secrets = (Map<String, Object>) yaml_secrets.load(stream_input_file_secrets);
+            // System.out.println(data_secrets.getClass().getCanonicalName());                                 //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
             // System.out.println(data_secrets);
             stream_input_file_secrets.close();                                                              //  Manual close. Consider using 'try-with-resources'. Throws exception: 'IOException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#close()'.
 
@@ -176,6 +207,7 @@ public class App {
         //     System.out.println(e.getMessage());                                                             //  Print error details.
         // }
         var secrets = (Map<String, Object>) data_secrets.get("secrets");
+        // System.out.println(secrets.getClass().getCanonicalName());                                          //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
         // System.out.println(secrets);
         System.out.println();
 
@@ -183,8 +215,8 @@ public class App {
         //  - Gets parameter from previous YAML import and casting into an instance of class Map; e.g. 'var data = (Map<String, Object>) yaml.load(stream_input_secrets);'
         System.out.println("-");
         System.out.println("[LOG] Getting API token...");
-        @SuppressWarnings("unused")
         var _EXCHANGERATE_API_TOKEN = (String) secrets.get("_EXCHANGERATE_API_TOKEN").toString();           //  Access an item from a 'Map' instance ('https://www.w3schools.com/java/java_hashmap.asp'), and converts 'Object' to 'String' with 'Object's inherent method '.toString()' ('https://www.baeldung.com/java-object-string-representation'). 
+        // System.out.println(_EXCHANGERATE_API_TOKEN.getClass().getCanonicalName());                          //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
         // System.out.println(_EXCHANGERATE_API_TOKEN);
         System.out.println();
         
@@ -196,18 +228,59 @@ public class App {
         // System.out.println(key);
         // System.out.println();
 
-        // //  MAIN APP.
+        //  MAIN APP.
 
-        // int cont = 0;
-        // while(is_menu_exit.equals(false)) {
-        //     System.out.println(menu);
-        //     cont++;
-        //     if (cont == 2) {
-        //         is_menu_exit = true;
-        //     }
-        //     System.out.println(cont);
-        //     System.out.println(is_menu_exit);
-        // }
+        System.out.println("-");
+
+        //  [USER INPUT] Creates a new instance of class 'Scanner' to read user input.
+        //  - Note: if mixing methods 'nextLine()' with nextXXX() methods such as 'next()' or 'nextInt()', beware of consuming line separator: 'https://www.reddit.com/r/learnjava/comments/gsffgs/comment/fs4z1ji/', 'https://www.baeldung.com/java-scanner#2nextint-api'.
+        var scanner = new Scanner(System.in);
+        // System.out.println(scanner.getClass().getCanonicalName());                                          //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+
+        //  Declare-ONLY attributes (as 'null' or 'empty', according to it's data type), for later re-usal: 'https://www.baeldung.com/java-string-initialization'.
+        var user_input_menu_option = (String) null;                                                         //  Initialize 'null' String. As such, any method called on this object, will throw an error.
+        var user_input_currency_amount = (Double) null;                                                     //  Initialize 'null' Double. As such, any method called on this object, will throw an error.
+        var user_input_currency_options = (List<?>) new ArrayList<>();                                      //  Initialize an 'empty' ArrayList, to emulate structure from importing YAML files that uses 'Map' class; specifically 'menu_options'.
+        var user_input_currency_from = (String) null;                                                       //  Initialize 'null' String. As such, any method called on this object, will throw an error.
+        var user_input_currency_to = (String) null;                                                         //  Initialize 'null' String. As such, any method called on this object, will throw an error.
+
+        //  Loop asking user for currency conversion, until user chooses exit; i.e. option '7'.
+        //  - Note: condition for while is using primitive booleans ('boolean'), not wrapper Class 'Boolean'; that's why we're using regular operators.
+        while(is_menu_exit == false) {
+
+            //  Prints MAIN menu, with options for user to choose.
+            //  - Note: uses 'print', instead of 'println', since menu text already has a new line.
+            System.out.print(menu);
+            user_input_menu_option = (String) scanner.nextLine();
+            // System.out.println(user_input_menu_option.getClass().getCanonicalName());                       //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+
+            //  Compare String user input, to determine if user wants to leave; i.e. input as '7'.
+            //  - Note: we are using proper value equality (with Classes methods) and not reference equality (with regular comparisson operators, like '=='): 'https://stackoverflow.com/questions/513832/how-do-i-compare-strings-in-java/513839#513839', 'https://www.baeldung.com/java-compare-strings'.
+            if (user_input_menu_option.trim().equalsIgnoreCase("7")) {
+                is_menu_exit = true;
+            } else {
+
+                //  Prints currency submenu, to introduce the amount to exchange.
+                //  - Note: uses 'print', instead of 'println', since menu text already has a new line.
+                System.out.print(menu_currency);
+                user_input_currency_amount = (Double) scanner.nextDouble();
+                // System.out.println(user_input_currency_amount.getClass().getCanonicalName());               //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+                scanner.nextLine();                                                                         //  Cleans leftover newline, from previous '.nextDouble()'. When mixing 'nextLine()' with others next methods of class 'Scanner', to clear Scanner buffer and clean remaining newline before next 'nextLine()': 'https://www.reddit.com/r/learnjava/comments/gsffgs/comment/fs4z1ji/', 'https://www.quora.com/How-do-you-use-a-scanner-for-a-loop-in-Java'.
+
+                //  Get currency exchange parameters, from options defined in the menu; e.g. Option '1': USD to ARS.
+                user_input_currency_options = (List<?>) menu_options.get(user_input_menu_option);           //  From configuration file structure, parameters for option defined in a Array (converted to ArrayList).
+                // System.out.println(user_input_currency_options.getClass().getCanonicalName());              //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+                user_input_currency_from = (String) user_input_currency_options.get(0);                     //  'From' currency, at position '0' in ArraList.
+                // System.out.println(user_input_currency_from.getClass().getCanonicalName());                 //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+                user_input_currency_to = (String) user_input_currency_options.get(1);                       //  'To' currency, at position '1' in ArraList.
+                // System.out.println(user_input_currency_to.getClass().getCanonicalName());                   //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+
+            }
+            
+        }
+
+        //  [USER INPUT] Closes 'Scanner' instance, after reading user input.
+        scanner.close();
 
         System.out.println("-");
         System.out.println();

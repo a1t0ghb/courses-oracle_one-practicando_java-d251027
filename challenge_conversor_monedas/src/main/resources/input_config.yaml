@@ -1,5 +1,5 @@
 #  PARAMETERS.
-#
+#  - Introduction guide: 'https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started'.
 ---
 parameters:
   menu_options:
