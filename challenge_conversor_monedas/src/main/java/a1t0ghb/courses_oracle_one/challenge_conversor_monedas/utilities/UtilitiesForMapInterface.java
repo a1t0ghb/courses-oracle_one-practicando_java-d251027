@@ -21,12 +21,18 @@ import java.util.Map;                                               //  [Interfa
  */
 public class UtilitiesForMapInterface {
 
+    //  INITIALIZATION OF INSTANCES.
+
     //  ATTRIBUTES DECLARATION.
+    //  - IMPORTANT: regarding primitive types (e.g. int, boolean, etc.), try ALWAYS instead to use their corresponding wrapper classes (e.g. Integer instead of int), to use proper methods, such as comparing and avoiding un-expected behaviours.
+    //  - Example of un-intended behaviours: comparing integers. Ref.: 'https://medium.com/@wanisha2013/always-use-equals-to-compare-integer-objects-in-java-e35e469332aa'.
+    //  - Wrappers for primitives, for proper use of methods, such as '.equals()', or 'compare()': 'https://www.w3schools.com/java/java_wrapper_classes.asp', 'https://www.geeksforgeeks.org/java/wrapper-class-vs-primitive-data-types-in-java-with-io/'.
 
     //  CONSTRUCTOR.
     //  - Same name as Class, and custom definition.
     //  - If 'empty' (i.e. 'predetermined'), it's usually useful to at least initialize attributes with default values.
     //  - If we define a constructor for the superclass, now ALL OF ITS SUBCLASSES must have a MATCHING constructor.
+    //  - [RECORDS] Custom constructor (e.g. canonical, compact, etc.): 'https://www.baeldung.com/java-record-keyword#constructors'.
 
     //  ATTRIBUTE'S 'GETTERS'.
 

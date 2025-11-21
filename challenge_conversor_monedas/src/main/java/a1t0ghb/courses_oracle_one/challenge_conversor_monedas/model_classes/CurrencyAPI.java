@@ -61,7 +61,7 @@ public record CurrencyAPI(
     //  - Same name as Class, and custom definition.
     //  - If 'empty' (i.e. 'predetermined'), it's usually useful to at least initialize attributes with default values.
     //  - If we define a constructor for the superclass, now ALL OF ITS SUBCLASSES must have a MATCHING constructor.
-    //  - [RECORDS] Custom constructor: 'https://www.baeldung.com/java-record-keyword#constructors'.
+    //  - [RECORDS] Custom constructor (e.g. canonical, compact, etc.): 'https://www.baeldung.com/java-record-keyword#constructors'.
     
     //  CONSTRUCTOR: compact (alternate to canonical; i.e. explicitly declare ALL arguments AGAIN).
     public CurrencyAPI {
