@@ -8,8 +8,8 @@ package a1t0ghb.courses_oracle_one.challenge_conversor_monedas.model_classes;
 
 //  IMPORTS - UTILITIES.
 
-//  API markers for properties-attributes matching:
-import com.fasterxml.jackson.annotation.JsonProperty;               //  [Interface] Marker ANNOTATION to indicate property name in JSON: 'https://www.baeldung.com/jackson-annotations#1-jsonproperty', 'https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations/latest/com.fasterxml.jackson.annotation/com/fasterxml/jackson/annotation/JsonProperty.html'.
+//  API markers for JSON properties-attributes matching:
+import com.google.gson.annotations.SerializedName;                  //  [Type] Marker ANNOTATION to indicate property name in JSON: 'https://javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/annotations/SerializedName.html'.
 
 //  Java utilities:
 //  - Shortcut for importing ALL Java Utils: 'import java.util.*;'.
@@ -34,22 +34,21 @@ import java.util.Objects;                                           // [Class] S
  *  @author a1t0ghb
  */
 public record CurrencyAPI(
-    @JsonProperty("result") String api_result
-    , @JsonProperty("documentation") String api_documentation
-    , @JsonProperty("terms_of_use") String api_terms_of_use_success
-    , @JsonProperty("time_last_update_unix") Integer api_time_last_update_unix
-    , @JsonProperty("time_last_update_utc") String api_time_last_update_utc
-    , @JsonProperty("time_next_update_unix") Integer api_time_next_update_unix
-    , @JsonProperty("time_next_update_utc") String api_time_next_update_utc
-    , @JsonProperty("base_code") String api_base_code
-    // , @JsonProperty("conversion_rates") Map<String, Double> api_conversion_rates
-    , @JsonProperty("terms-of-use") String api_terms_of_use_error
-    , @JsonProperty("error-type") String api_error_type
+    @SerializedName("result") String api_result
+    , @SerializedName("documentation") String api_documentation
+    , @SerializedName(value = "terms_of_use", alternate = {"terms-of-use"}) String api_terms_of_use
+    , @SerializedName("time_last_update_unix") Integer api_time_last_update_unix
+    , @SerializedName("time_last_update_utc") String api_time_last_update_utc
+    , @SerializedName("time_next_update_unix") Integer api_time_next_update_unix
+    , @SerializedName("time_next_update_utc") String api_time_next_update_utc
+    , @SerializedName("base_code") String api_base_code
+    // , @SerializedName("conversion_rates") Map<String, Double> api_conversion_rates
+    , @SerializedName("error-type") String api_error_type
 ) {
     //  Introduction to Java records: 'https://www.youtube.com/watch?v=_xIA7vhWkLk', 'https://www.theserverside.com/video/Java-records-tutorial'.
     //  NOTE: Class parameters come from picking JSON fields, based on HTTP request testing of API; e.g. on Postman or Apidog.
     //  - Test URL: 'https://v6.exchangerate-api.com/v6/<api_token>/latest/USD'.
-    //  NOTE: @JsonProperty() markers are according to example in 'https://angiejones.tech/deserializing-api-responses-into-java-records/'.
+    //  Example for configuring and using marker '@SerializedName': 'https://javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/annotations/SerializedName.html'.
 
     //  ATTRIBUTES DECLARATION.
     //  - IMPORTANT: regarding primitive types (e.g. int, boolean, etc.), try ALWAYS instead to use their corresponding wrapper classes (e.g. Integer instead of int), to use proper methods, such as comparing and avoiding un-expected behaviours.
@@ -69,6 +68,7 @@ public record CurrencyAPI(
         // Enforcing non-null: 'https://xebia.com/blog/how-to-use-java-records/#enforcing-nonnull'.
         Objects.requireNonNull(api_result, "'api_result' cannot be null.");
         Objects.requireNonNull(api_documentation, "'api_documentation' cannot be null.");
+        Objects.requireNonNull(api_terms_of_use, "'api_terms_of_use' cannot be null.");
 
     }
 
@@ -77,7 +77,7 @@ public record CurrencyAPI(
     public CurrencyAPI(
         String api_result
         , String api_documentation
-        , String api_terms_of_use_success
+        , String api_terms_of_use
         , Integer api_time_last_update_unix
         , String api_time_last_update_utc
         , Integer api_time_next_update_unix
@@ -87,8 +87,8 @@ public record CurrencyAPI(
 
         //  Call of compact or canonical Constructor, with adjusted parameters.
         this(
-            api_result, api_documentation, api_terms_of_use_success, api_time_last_update_unix, api_time_last_update_utc, api_time_next_update_unix, api_time_next_update_utc, api_base_code
-            , null, null
+            api_result, api_documentation, api_terms_of_use, api_time_last_update_unix, api_time_last_update_utc, api_time_next_update_unix, api_time_next_update_utc, api_base_code
+            , null
         );
 
     }
@@ -98,14 +98,14 @@ public record CurrencyAPI(
     public CurrencyAPI(
         String api_result
         , String api_documentation
-        , String api_terms_of_use_error
+        , String api_terms_of_use
         , String api_error_type
     ) {
 
         //  Call of compact or canonical Constructor, with adjusted parameters.
         this(
-            api_result, api_documentation, null, null, null, null, null, null
-            , api_terms_of_use_error, api_error_type
+            api_result, api_documentation, api_terms_of_use, null, null, null, null, null
+            , api_error_type
         );
 
     }

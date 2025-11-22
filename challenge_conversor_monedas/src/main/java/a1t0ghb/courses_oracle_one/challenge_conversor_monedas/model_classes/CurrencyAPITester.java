@@ -24,7 +24,6 @@ public class CurrencyAPITester {
             , 1763596802
             , "Thu, 20 Nov 2025 00:00:02 +0000"
             , "ARS"
-            , "https://www.exchangerate-api.com/terms"
             , "invalid-key"
         );
         
@@ -49,8 +48,7 @@ public class CurrencyAPITester {
         // var my_currency_min = new CurrencyAPI(
         //     "success"
         //     , "https://www.exchangerate-api.com/docs"
-        //     // , null
-        //     // , null
+        //     , "https://www.exchangerate-api.com/terms"
         //     // , null
         //     // , null
         //     // , null
@@ -62,8 +60,7 @@ public class CurrencyAPITester {
         var my_currency_min_extra_null = new CurrencyAPI(
             "success"
             , "https://www.exchangerate-api.com/docs"
-            , null
-            , null
+            , "https://www.exchangerate-api.com/terms"
             , null
             , null
             , null
@@ -88,11 +85,10 @@ public class CurrencyAPITester {
         // System.out.println(my_currency_min_extra_null.api_error_type().getClass().getCanonicalName());       //  Throws error, since it's 'null'.
         System.out.println();
 
-        // //  NOTE: ERROR; due to Constructor built, since it's enforced to have MINIMUM 'api_result' AND 'api_documentation' NOT 'null'; i.e. method 'Objects.requireNonNull()'.
-        // //  - Throws error when EXECUTING (NOT COMPILING) of: 'Exception in thread "main" java.lang.NullPointerException'.
+        // //  NOTE: ERROR; due to Constructor built, since it's enforced to have MINIMUM 'api_result', 'api_documentation' AND 'api_terms_of_use' as NOT 'null'; i.e. method 'Objects.requireNonNull()'.
+        // //  - Throws error when EXECUTING (after COMPILING) of: 'Exception in thread "main" java.lang.NullPointerException'.
         // var my_currency_one_of_min_null = new CurrencyAPI(
         //     "success"
-        //     , null
         //     , null
         //     , null
         //     , null
@@ -112,7 +108,6 @@ public class CurrencyAPITester {
             , 1763596802
             , "Thu, 20 Nov 2025 00:00:02 +0000"
             , "ARS"
-            // , "https://www.exchangerate-api.com/terms"
             // , "invalid-key"
         );
 
@@ -142,7 +137,6 @@ public class CurrencyAPITester {
         //     , 1763596802
         //     , "Thu, 20 Nov 2025 00:00:02 +0000"
         //     , "ARS"
-        //     , null
         //     , null
         // );
 
