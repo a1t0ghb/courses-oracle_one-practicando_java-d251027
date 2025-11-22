@@ -8,13 +8,19 @@ package a1t0ghb.courses_oracle_one.challenge_conversor_monedas;
 //  IMPORTS: external classes and interfaces.
 
 //  IMPORTS - UTILITIES.
-//  Shortcut for importing ALL Java Utils: 'import java.util.*;'.
+
+//  File management:
 import java.io.File;                                                //  [Class] Files and directories management: 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html'.
 import java.io.InputStream;                                         //  [Class] Input stream of bytes (reading files as streams): 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/InputStream.html'.
 import java.io.FileInputStream;                                     //  [Class - subclass of 'InputStream'] Reads streams of raw bytes: 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html'.
 import java.io.FileNotFoundException;                               //  [Class - related to 'InputStream'] Exception when fails to open a file: 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileNotFoundException.html'.
 import java.io.IOException;                                         //  [Class - superclass of 'FileNotFoundException'] General exception for IO operations: 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html'.
+
+//  YAML parsing:
 import org.yaml.snakeyaml.Yaml;                                     //  [Class] Parsing YAML files: 'https://javadoc.io/doc/org.yaml/snakeyaml/latest/org/yaml/snakeyaml/Yaml.html', 'https://bitbucket.org/snakeyaml/snakeyaml/wiki/Documentation#markdown-header-tutorial'.
+
+//  Java utilities:
+//  - Shortcut for importing ALL Java Utils: 'import java.util.*;'.
 import java.util.Map;                                               //  [Interface] A key-value mapping: 'https://www.baeldung.com/java-hashmap#basic-usage', 'https://www.w3schools.com/java/java_map.asp', 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html'.
 // import java.util.stream.Stream;                                     //  [Interface] Stream as flexible return; e.g. 'one key' as a single String, or a collection, as a Set of Strings: 'https://www.baeldung.com/java-map-key-from-value#a-functional-approach', 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html'.
 import java.util.List;                                              //  [Interface] Part of Java Collections, for ORDERED COLLECTIONS; to use it, create a class that implements this interface, such as 'ArrayList'. e.g. to manage lists from 'Map' instance for parameters. Ref. 'https://www.w3schools.com/java/java_list.asp', 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html'.
@@ -23,15 +29,39 @@ import java.util.Scanner;                                           //  [Class] 
 
 //  IMPORTS - CUSTOM CLASSES AND CUSTOM INTERFACES.
 // import a1t0ghb.courses_oracle_one.challenge_conversor_monedas.utilities.UtilitiesForMapInterface;
+import a1t0ghb.courses_oracle_one.challenge_conversor_monedas.utilities.APIQuery;
+// import a1t0ghb.courses_oracle_one.challenge_conversor_monedas.model_classes.CurrencyAPI;
 
 /**
- *
+ * App class documentation.
  * @author a1t0ghb
  */
 public class App {
 
+    //  ATTRIBUTES DECLARATION.
+    //  - IMPORTANT: regarding primitive types (e.g. int, boolean, etc.), try ALWAYS instead to use their corresponding wrapper classes (e.g. Integer instead of int), to use proper methods, such as comparing and avoiding un-expected behaviours.
+    //  - Example of un-intended behaviours: comparing integers. Ref.: 'https://medium.com/@wanisha2013/always-use-equals-to-compare-integer-objects-in-java-e35e469332aa'.
+    //  - Wrappers for primitives, for proper use of methods, such as '.equals()', or 'compare()': 'https://www.w3schools.com/java/java_wrapper_classes.asp', 'https://www.geeksforgeeks.org/java/wrapper-class-vs-primitive-data-types-in-java-with-io/'.
+
+    //  CONSTRUCTOR.
+    //  - Same name as Class, and custom definition.
+    //  - If 'empty' (i.e. 'predetermined'), it's usually useful to at least initialize attributes with default values.
+    //  - If we define a constructor for the superclass, now ALL OF ITS SUBCLASSES must have a MATCHING constructor.
+    //  - [RECORDS] Custom constructor (e.g. canonical, compact, etc.): 'https://www.baeldung.com/java-record-keyword#constructors'.
+
+    //  ATTRIBUTE'S 'GETTERS'.
+
+    //  ATTRIBUTE'S 'SETTERS': usually, public.
+    //  - Protected keyword 'this' is used to refer to CURRENT object, to avoid confusions with parameters (in case those have the same name).
+
+    //  INHERITED METHODS TO OVERRIDE: custom definitions for CURRENT class.
+
+    //  METHODS FROM 'IMPLEMENTS'.
+    
+    //  REGULAR METHODS.
+
     @SuppressWarnings("ConvertToTryWithResources")
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException {
         // System.out.println("Hello World!");
         System.out.println();
 
@@ -166,6 +196,12 @@ public class App {
         // }
         // //  Example: accessing 'List' of exchange rates parameters for option 1; e.g. USD => ARS.
         // //  - How to access a list item: 'https://www.w3schools.com/java/java_list.asp'.
+        // //  - List vs. List<?> vs. List<Object>: Java Generics. Refs.
+        // //    - 'https://stackoverflow.com/questions/9988211/listobject-and-list'.
+        // //    - 'https://stackoverflow.com/questions/1844770/what-does-list-mean-in-java-generics'.
+        // //    - 'https://stackoverflow.com/questions/6783316/list-vs-listobject'.
+        // //    - 'https://medium.com/@kthsingh.ms/list-vs-list-object-understanding-java-generics-11079c63b6fb'.
+        // //    - 'https://hauchee.blogspot.com/2015/09/differences-between-raw-type-parameterized-type-and-wildcard-type.html'.
         // var currency_options_1 = (List<?>) menu_options.get("1");
         // //  Note: get Class name, to understand what class type returns method '.get()' from Map instance.
         // System.out.println(currency_options_1.getClass().getCanonicalName());                                //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
@@ -275,6 +311,14 @@ public class App {
                 user_input_currency_to = (String) user_input_currency_options.get(1);                       //  'To' currency, at position '1' in ArraList.
                 // System.out.println(user_input_currency_to.getClass().getCanonicalName());                   //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
 
+                //  Creates a new instance of an API query to retrieve the currency data.
+                var api_query = new APIQuery();
+                var currency_api = api_query.GetCurrencyData(_EXCHANGERATE_API_TOKEN, user_input_currency_from);      //  Throws IOException, InterruptedException.
+                var conversion_rate = currency_api.GetConversionRate(user_input_currency_to);
+                var currency_converted = (Double) (conversion_rate * user_input_currency_amount);
+                System.out.println("El valor '" + user_input_currency_amount + "' [" + user_input_currency_from + "] corresponde al valor final de => '" + currency_converted + "' [" + user_input_currency_to + "].");
+                System.out.println();
+
             }
             
         }
@@ -284,22 +328,6 @@ public class App {
 
         System.out.println("-");
         System.out.println();
-
-        //  CONSTRUCTOR.
-        //  - Same name as Class, and custom definition.
-        //  - If 'empty' (i.e. 'predetermined'), it's usually useful to at least initialize attributes with default values.
-        //  - If we define a constructor for the superclass, now ALL OF ITS SUBCLASSES must have a MATCHING constructor.
-
-        //  ATTRIBUTE'S 'GETTERS'.
-
-        //  ATTRIBUTE'S 'SETTERS': usually, public.
-        //  - Protected keyword 'this' is used to refer to CURRENT object, to avoid confusions with parameters (in case those have the same name).
-
-        //  INHERITED METHODS TO OVERRIDE: custom definitions for CURRENT class.
-
-        //  METHODS FROM 'IMPLEMENTS'.
-        
-        //  REGULAR METHODS.
 
     }
     
