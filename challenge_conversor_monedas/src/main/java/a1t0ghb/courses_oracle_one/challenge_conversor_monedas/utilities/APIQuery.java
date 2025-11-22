@@ -20,6 +20,10 @@ import java.net.http.HttpRequest;                                   //  [Class] 
 import java.net.http.HttpResponse;                                  //  [Interface] An HttpResponse is not created DIRECTLY, but rather returned as result of an HttpRequest: 'https://docs.oracle.com/en/java/javase/17/docs/api/java.net.http/java/net/http/HttpResponse.html'.
 import java.io.IOException;                                         //  [Class - Exception, from method '.send()' of class 'HttpClient'] I/O exception: 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html'.
 
+// JSON serialization / de-serialization:
+import com.google.gson.Gson;                                        //  [Class] Main Gson class; default: 'Gson my_gson = new Gson();'. Ref.: 'https://javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/Gson.html'.
+import com.google.gson.GsonBuilder;                                 //  [Class] For creating a custom Gson, with options other than DEFAULT; e.g. output pretty printing format, add a field naming policy and/or enable output of 'null' values: 'https://javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/GsonBuilder.html'.
+
 //  IMPORTS - CUSTOM CLASSES AND CUSTOM INTERFACES.
 import a1t0ghb.courses_oracle_one.challenge_conversor_monedas.model_classes.CurrencyAPI;
 
@@ -64,8 +68,7 @@ public class APIQuery {
     /**
      * GetCurrencyData method documentation.
      */
-    // TODO: public CurrencyAPI GetCurrencyData(String api_token, String currency_from) {
-    public void GetCurrencyData(String api_token, String currency_from) throws IOException, InterruptedException {
+    public CurrencyAPI GetCurrencyData(String api_token, String currency_from) throws IOException, InterruptedException {
 
         //  Creates URL to connect with proper API's endpoint.
         var api_uri = (URI) URI.create(
@@ -91,10 +94,23 @@ public class APIQuery {
         //  - Exceptions: IOException, InterruptedException. Ref.: 'https://docs.oracle.com/en/java/javase/17/docs/api/java.net.http/java/net/http/HttpClient.html#send(java.net.http.HttpRequest,java.net.http.HttpResponse.BodyHandler)'.
         // try {
 
+            System.out.println("[LOG] Sending HTTP request to API...");
             var http_response = (HttpResponse<String>) http_client
                 .send(http_request, HttpResponse.BodyHandlers.ofString());
             System.out.println(http_response);
             // System.out.println(http_response.getClass().getCanonicalName());                    //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+
+            var http_response_status = (Integer) http_response.statusCode();
+            System.out.println(http_response_status);
+            System.out.println(http_response_status.getClass().getCanonicalName());             //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+
+            //  If API call successful, how proper log message. Otherwise, throws Exception with CUSTOM message.
+            if(Integer.compare(200, http_response_status) == 0) {
+                System.out.println("[LOG - SUCCESS] Successful API response.");
+            } else {
+                System.out.println("[LOG - ERROR] Request to API failed. Please check following error message:");
+                //  Throws Exception with CUSTOMh CUSTOM message; 404 page not found, retrieving an HTML page isntead of JSON, 403 retrieveing successful JSON, but with no data due to permissions, etc.
+            }
             
         // } catch (IOException | InterruptedException e) {
         //     System.out.println("[LOG - ERROR] Request to API failed. Please check following error message:");
@@ -105,6 +121,22 @@ public class APIQuery {
         var http_response_json = (String) http_response.body();
         System.out.println(http_response_json);
         // System.out.println(http_response_json.getClass().getCanonicalName());                   //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+        System.out.println();
+
+        //  Creates a new JSON serializer / de-serializer: 'https://github.com/google/gson/blob/main/UserGuide.md'.
+        //  - Configure options other than DEFAULTS: 'https://javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/GsonBuilder.html'.
+        Gson my_gson = new GsonBuilder()
+            // .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CASE_WITH_UNDERSCORES)                //  Defining STANDARD matching attributes with JSON fields (e.g. Java: someFieldName => JSON: SOME_FIELD_NAME), in case of NOT USING annotation markers '@SerializedName' in classes: 'https://github.com/google/gson/blob/main/UserGuide.md#json-field-naming-support', 'https://javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/FieldNamingPolicy.html'.
+            // .setPrettyPrinting()                                                                //  JSON output: compact vs. pretty printing: 'https://github.com/google/gson/blob/main/UserGuide.md#compact-vs-pretty-printing-for-json-output-format'.
+            .create();
+        
+        //  Returns an instance of class 'CurrencyAPI'.
+        var my_currency_api = (CurrencyAPI) my_gson.fromJson(http_response_json, CurrencyAPI.class);
+        System.out.println(my_currency_api);
+        System.out.println(my_currency_api.getClass().getCanonicalName());                      //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+        System.out.println();
+        
+        return my_currency_api;
 
     }
 
