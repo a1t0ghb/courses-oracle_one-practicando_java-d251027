@@ -54,12 +54,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <!-- [Maven repository] Jackson Databind - API data-binding tool: 'https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind'. -->
-            <!-- Dependency Javadoc: 'https://javadoc.io/doc/tools.jackson.core/jackson-databind/3.0.1/tools.jackson.databind/module-summary.html'. -->
-            <!-- Jackson Databind documentation: 'https://github.com/FasterXML/jackson-docs'. -->
-            <groupId>tools.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>3.0.1</version>
+            <!-- [Maven repository] Gson - Java objects to (serialization) / from (de-serialization) JSON: 'https://mvnrepository.com/artifact/com.google.code.gson/gson'. -->
+            <!-- Dependency Javadoc: 'https://javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/module-summary.html'. -->
+            <!-- Gson user guide: 'https://github.com/google/gson/blob/main/UserGuide.md'. -->
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.13.1</version>
             <!-- 'scope': default value is 'compile', if not explicitly declared. -->
             <scope>compile</scope>
         </dependency>
