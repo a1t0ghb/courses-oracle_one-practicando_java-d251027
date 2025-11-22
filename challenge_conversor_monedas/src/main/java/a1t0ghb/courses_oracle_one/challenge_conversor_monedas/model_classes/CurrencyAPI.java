@@ -13,8 +13,8 @@ import com.google.gson.annotations.SerializedName;                  //  [Type] M
 
 //  Java utilities:
 //  - Shortcut for importing ALL Java Utils: 'import java.util.*;'.
-import java.util.Objects;                                           // [Class] Static utilities methods; in this case, for custom Constructor of Java record: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html', 'https://www.baeldung.com/java-record-keyword#constructors'.
-// import java.util.Map;                                               //  [Interface] A key-value mapping: 'https://www.baeldung.com/java-hashmap#basic-usage', 'https://www.w3schools.com/java/java_map.asp', 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html'.
+import java.util.Objects;                                           //  [Class] Static utilities methods; in this case, for custom Constructor of Java record: 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Objects.html', 'https://www.baeldung.com/java-record-keyword#constructors'.
+import java.util.Map;                                               //  [Interface] A key-value mapping: 'https://www.baeldung.com/java-hashmap#basic-usage', 'https://www.w3schools.com/java/java_map.asp', 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html'.
 
 //  IMPORTS - CUSTOM CLASSES AND CUSTOM INTERFACES.
 
@@ -41,8 +41,8 @@ public record CurrencyAPI(
     , @SerializedName("time_last_update_utc") String api_time_last_update_utc
     , @SerializedName("time_next_update_unix") Integer api_time_next_update_unix
     , @SerializedName("time_next_update_utc") String api_time_next_update_utc
-    , @SerializedName("base_code") String api_base_code
-    // , @SerializedName("conversion_rates") Map<String, Double> api_conversion_rates
+    , @SerializedName("base_code") String currency_from
+    , @SerializedName("conversion_rates") Map<String, Double> api_conversion_rates
     , @SerializedName("error-type") String api_error_type
 ) {
     //  Introduction to Java records: 'https://www.youtube.com/watch?v=_xIA7vhWkLk', 'https://www.theserverside.com/video/Java-records-tutorial'.
@@ -82,12 +82,13 @@ public record CurrencyAPI(
         , String api_time_last_update_utc
         , Integer api_time_next_update_unix
         , String api_time_next_update_utc
-        , String api_base_code
+        , String currency_from
+        , Map<String, Double> api_conversion_rates
     ) {
 
         //  Call of compact or canonical Constructor, with adjusted parameters.
         this(
-            api_result, api_documentation, api_terms_of_use, api_time_last_update_unix, api_time_last_update_utc, api_time_next_update_unix, api_time_next_update_utc, api_base_code
+            api_result, api_documentation, api_terms_of_use, api_time_last_update_unix, api_time_last_update_utc, api_time_next_update_unix, api_time_next_update_utc, currency_from, api_conversion_rates
             , null
         );
 
@@ -104,10 +105,28 @@ public record CurrencyAPI(
 
         //  Call of compact or canonical Constructor, with adjusted parameters.
         this(
-            api_result, api_documentation, api_terms_of_use, null, null, null, null, null
+            api_result, api_documentation, api_terms_of_use, null, null, null, null, null, null
             , api_error_type
         );
 
+    }
+
+    //  ATTRIBUTE'S 'GETTERS'.
+
+    //  ATTRIBUTE'S 'SETTERS': usually, public.
+    //  - Protected keyword 'this' is used to refer to CURRENT object, to avoid confusions with parameters (in case those have the same name).
+
+    //  INHERITED METHODS TO OVERRIDE: custom definitions for CURRENT class.
+
+    //  METHODS FROM 'IMPLEMENTS'.
+    
+    //  REGULAR METHODS.
+
+    public Double GetConversionRate(String currency_to) {
+
+        var conversion_rate = api_conversion_rates().get(currency_to);
+        // var conversion_rate = (Double) 3763.9711;
+        return conversion_rate;
     }
 
 }
