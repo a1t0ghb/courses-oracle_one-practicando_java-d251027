@@ -74,7 +74,7 @@ public class APIQuery {
         var api_uri = (URI) URI.create(
             api_url_base + "/" + api_token + "/latest/"+ currency_from
         );
-        System.out.println(api_uri);
+        // System.out.println(api_uri);
         // System.out.println(api_uri.getClass().getCanonicalName());                              //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
         
         //  Creates new, default http client to send hettp requests to the API.
@@ -95,14 +95,15 @@ public class APIQuery {
         // try {
 
             System.out.println("[LOG] Sending HTTP request to API...");
+            System.out.println();
             var http_response = (HttpResponse<String>) http_client
                 .send(http_request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(http_response);
+            // System.out.println(http_response);
             // System.out.println(http_response.getClass().getCanonicalName());                    //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
 
             var http_response_status = (Integer) http_response.statusCode();
-            System.out.println(http_response_status);
-            System.out.println(http_response_status.getClass().getCanonicalName());             //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+            // System.out.println(http_response_status);
+            // System.out.println(http_response_status.getClass().getCanonicalName());             //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
 
             //  If API call successful, how proper log message. Otherwise, throws Exception with CUSTOM message.
             if(Integer.compare(200, http_response_status) == 0) {
@@ -111,7 +112,8 @@ public class APIQuery {
                 System.out.println("[LOG - ERROR] Request to API failed. Please check following error message:");
                 //  Throws Exception with CUSTOMh CUSTOM message; 404 page not found, retrieving an HTML page isntead of JSON, 403 retrieveing successful JSON, but with no data due to permissions, etc.
             }
-            
+            System.out.println();
+
         // } catch (IOException | InterruptedException e) {
         //     System.out.println("[LOG - ERROR] Request to API failed. Please check following error message:");
         //     System.out.println(e.getMessage());
@@ -119,9 +121,9 @@ public class APIQuery {
 
         //  Prints body of HTTP request; i.e. JSON, in raw format.
         var http_response_json = (String) http_response.body();
-        System.out.println(http_response_json);
+        // System.out.println(http_response_json);
         // System.out.println(http_response_json.getClass().getCanonicalName());                   //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
-        System.out.println();
+        // System.out.println();
 
         //  Creates a new JSON serializer / de-serializer: 'https://github.com/google/gson/blob/main/UserGuide.md'.
         //  - Configure options other than DEFAULTS: 'https://javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/GsonBuilder.html'.
@@ -132,9 +134,9 @@ public class APIQuery {
         
         //  Returns an instance of class 'CurrencyAPI'.
         var my_currency_api = (CurrencyAPI) my_gson.fromJson(http_response_json, CurrencyAPI.class);
-        System.out.println(my_currency_api);
-        System.out.println(my_currency_api.getClass().getCanonicalName());                      //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
-        System.out.println();
+        // System.out.println(my_currency_api);
+        // System.out.println(my_currency_api.getClass().getCanonicalName());                      //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+        // System.out.println();
         
         return my_currency_api;
 
