@@ -153,7 +153,7 @@ public class App {
                     System.out.println(input_files_filepath);
                     System.out.println();
                     //  [POSSIBLE EXCEPTIONS => Stops Execution] 'https://rollbar.com/guides/java/how-to-throw-exceptions-in-java/'.
-                    //  - 'Exception': if file doesn't exits.
+                    //  - 'Exception': if any config. file doesn't exist.
                     throw new Exception("File does not exist. Please make sure it's present: " + input_files_filepath);
                 }
                 //  If file exists, it's properties are showed: 'https://www.w3schools.com/java/java_files_read.asp'.
@@ -173,7 +173,7 @@ public class App {
             System.out.println("-");
             //  [CONFIG. FILES READING] Opens 'InputStream' instance, for reading configuration file.
             //  [POSSIBLE EXCEPTIONS => Stops Execution] 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#%3Cinit%3E(java.lang.String)'.
-            //  - 'FileNotFoundException': if file doesn't exits.
+            //  - 'FileNotFoundException': if a file fails to open.
             var stream_input_file = (InputStream) new FileInputStream(input_files_filepaths[0]);
             // System.out.println(stream_input_file);
             // System.out.println(stream_input_file.getClass().getCanonicalName());                    //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
@@ -247,7 +247,7 @@ public class App {
             System.out.println("-");
             //  [CONFIG. FILES READING] Opens 'InputStream' instance, for reading configuration file.
             //  [POSSIBLE EXCEPTIONS => Stops Execution] 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#%3Cinit%3E(java.lang.String)'.
-            //  - 'FileNotFoundException': if file doesn't exits.
+            //  - 'FileNotFoundException': if a file fails to open.
             var stream_input_file_secrets = (InputStream) new FileInputStream(input_files_filepaths[1]);
             System.out.println("[LOG] Reading '.yaml' file...");
             System.out.println(input_files_filepaths[1]);
@@ -371,6 +371,8 @@ public class App {
                             //  [POSSIBLE EXCEPTIONS => Returns To Main Menu] From CUSTOM implementation:
                             //  - 'IOException': general errors in I/O operations.
                             //  - 'InterruptedException': if I/O operation is interrupted.
+                            //  - 'Exception': if HTTP response different than 200 (OK).
+                            //  - 'JsonSyntaxException': if json is not a valid representation for an object of type classOfT.
                             var currency_api = api_query
                                 .GetCurrencyData(_EXCHANGERATE_API_TOKEN, user_input_currency_from);
                             var conversion_rate = currency_api.GetConversionRate(user_input_currency_to);
@@ -393,6 +395,18 @@ public class App {
                         }
 
                     }
+                
+                //  Catchs in hierarchical order; from MOST SPECIFIC to MORE GENERAL:
+                //  1. 'JsonSyntaxException': 'https://javadoc.io/static/com.google.code.gson/gson/2.13.1/com.google.gson/com/google/gson/JsonSyntaxException.html'.
+                //    - From: CUSTOM '.GetCurrencyData' (if json is not a valid representation for an object of type classOfT).
+                //  2. 'NumberFormatException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/NumberFormatException.html'.
+                //    - From: 'Double.valueOf' (if input is not a number).
+                //  3A. 'IOException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html'.
+                //    - From: CUSTOM '.GetCurrencyData' (general errors in I/O operations).
+                //  3B. 'InterruptedException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/InterruptedException.html'.
+                //    - From: CUSTOM '.GetCurrencyData' (if I/O operation is interrupted).
+                //  4. 'Exception': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html'.
+                //    - From: CUSTOM '.GetCurrencyData' (if HTTP response different than 200 (OK)), and ANY OTHER UN-IDENTIFIED Exception.
                 } catch (JsonSyntaxException e) {
                     System.out.println("[LOG - ERROR] There was an error while trying to read a malformed JSON after API call. Please review the error message for details:");
                     System.out.println(e.getMessage());                                                         //  Print error details.
@@ -426,10 +440,13 @@ public class App {
             System.out.println("[LOG] Exiting main menu... Thank you for using this app!.");
             System.out.println();
 
-        //  Catchs in hierarchical order; from specific to general:
+        //  Catchs in hierarchical order; from MOST SPECIFIC to MORE GENERAL:
         //  1. 'FileNotFoundException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileNotFoundException.html'.
+        //    - From: 'new FileInputStream' (if a file fails to open). 
         //  2. 'IOException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html'.
+        //    - From: '.close()' (general errors in I/O operations).
         //  3. 'Exception': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html'.
+        //    - From: CUSTOM 'new Exception' (if any config. file doesn't exist), and ANY OTHER UN-IDENTIFIED Exception.
         } catch (FileNotFoundException e) {
             System.out.println("[LOG - ERROR] There was an error while trying to open a file for reading. Please review the error message for details:");
             System.out.println(e.getMessage());                                                                 //  Print error details.
