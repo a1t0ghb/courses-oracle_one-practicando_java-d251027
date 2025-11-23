@@ -6,6 +6,7 @@
 package a1t0ghb.courses_oracle_one.challenge_conversor_monedas.utilities;
 
 import java.io.IOException;
+import com.google.gson.JsonSyntaxException;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.io.IOException;
  */
 public class APIQueryTester {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, Exception, JsonSyntaxException {
 
         System.out.println();
 

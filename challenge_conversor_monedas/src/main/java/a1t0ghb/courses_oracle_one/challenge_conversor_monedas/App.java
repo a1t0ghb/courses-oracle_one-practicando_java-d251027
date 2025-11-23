@@ -24,13 +24,16 @@ import org.yaml.snakeyaml.Yaml;                                     //  [Class] 
 import java.util.Map;                                               //  [Interface] A key-value mapping: 'https://www.baeldung.com/java-hashmap#basic-usage', 'https://www.w3schools.com/java/java_map.asp', 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html'.
 // import java.util.stream.Stream;                                     //  [Interface] Stream as flexible return; e.g. 'one key' as a single String, or a collection, as a Set of Strings: 'https://www.baeldung.com/java-map-key-from-value#a-functional-approach', 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html'.
 import java.util.List;                                              //  [Interface] Part of Java Collections, for ORDERED COLLECTIONS; to use it, create a class that implements this interface, such as 'ArrayList'. e.g. to manage lists from 'Map' instance for parameters. Ref. 'https://www.w3schools.com/java/java_list.asp', 'https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html'.
-import java.util.ArrayList;                                         //  [Class] Class for implementation of 'List' Interface: 'https://www.w3schools.com/java/java_arraylist.asp'.
+// import java.util.ArrayList;                                         //  [Class] Class for implementation of 'List' Interface: 'https://www.w3schools.com/java/java_arraylist.asp'.
 import java.util.Scanner;                                           //  [Class] User input via console / terminal: 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Scanner.html', 'https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Java-Scanner-User-Input-example-String-next-int-long-char', 'https://www.baeldung.com/java-scanner', 'https://www.quora.com/How-do-you-use-a-scanner-for-a-loop-in-Java', 'https://medium.com/@AlexanderObregon/reading-multiple-lines-of-input-with-java-scanner-4901bb99cbbd'.
+
+// JSON serialization / de-serialization:
+import com.google.gson.JsonSyntaxException;                         //  [Class] Exception for reading / writing a malformed JSON element: 'https://javadoc.io/static/com.google.code.gson/gson/2.13.2/com.google.gson/com/google/gson/JsonSyntaxException.html'.
 
 //  IMPORTS - CUSTOM CLASSES AND CUSTOM INTERFACES.
 // import a1t0ghb.courses_oracle_one.challenge_conversor_monedas.utilities.UtilitiesForMapInterface;
 import a1t0ghb.courses_oracle_one.challenge_conversor_monedas.utilities.APIQuery;
-import a1t0ghb.courses_oracle_one.challenge_conversor_monedas.model_classes.CurrencyAPI;
+// import a1t0ghb.courses_oracle_one.challenge_conversor_monedas.model_classes.CurrencyAPI;
 
 /**
  * App class documentation.
@@ -60,8 +63,8 @@ public class App {
     
     //  REGULAR METHODS.
 
-    // @SuppressWarnings("ConvertToTryWithResources")
-    public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException {
+    @SuppressWarnings("ConvertToTryWithResources")
+    public static void main(String[] args) {
         // System.out.println("Hello World!");
         System.out.println();
 
@@ -112,7 +115,8 @@ public class App {
 
         //  INITIALIZATION OF INSTANCES.
 
-        //  Using approach of nested try-blocks for Exception handling: 'https://www.geeksforgeeks.org/java/nested-try-blocks-in-exception-handling-in-java/', 'https://www.codingshuttle.com/java-programming-handbook/multiple-and-nested-try-catch/'.
+        //  Using approach of nested try-catch blocks for Exception handling: 'https://www.geeksforgeeks.org/java/nested-try-blocks-in-exception-handling-in-java/', 'https://www.codingshuttle.com/java-programming-handbook/multiple-and-nested-try-catch/'.
+        //  - In this 1st nested try-catch block, any error STOPS EXECUTION, since minimum requirements for execution ARE NOT MET.
         try {
 
             // var stream_from_map = new UtilitiesForMapInterface();                                   //  Custom class for methods with instances of class 'Map'.
@@ -143,11 +147,13 @@ public class App {
                 System.out.println("Filename: " + input_file.getName());
                 System.out.println("Folder path: " + input_file.getParent());
                 System.out.println();
-                //  [POSSIBLE EXCEPTION - Stops Execution] If file doesn't exits, it throws a general Exception: 'https://rollbar.com/guides/java/how-to-throw-exceptions-in-java/'.
+                //  If file doesn't exist, throws MANUAL / CUSTOM Exception.
                 if (input_file.exists() == false) {
                     System.out.println("[LOG - ERROR] File does not exist.");
                     System.out.println(input_files_filepath);
                     System.out.println();
+                    //  [POSSIBLE EXCEPTIONS => Stops Execution] 'https://rollbar.com/guides/java/how-to-throw-exceptions-in-java/'.
+                    //  - 'Exception': if file doesn't exits.
                     throw new Exception("File does not exist. Please make sure it's present: " + input_files_filepath);
                 }
                 //  If file exists, it's properties are showed: 'https://www.w3schools.com/java/java_files_read.asp'.
@@ -166,7 +172,8 @@ public class App {
             //    - Support example: construct a Java object of any type. Ref. 'https://bitbucket.org/snakeyaml/snakeyaml/src/master/src/test/java/examples/AnyObjectExampleTest.java'.
             System.out.println("-");
             //  [CONFIG. FILES READING] Opens 'InputStream' instance, for reading configuration file.
-            //  [POSSIBLE EXCEPTION - Stops Execution] If file doesn't exits, it throws a 'FileNotFoundException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#%3Cinit%3E(java.lang.String)'..
+            //  [POSSIBLE EXCEPTIONS => Stops Execution] 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#%3Cinit%3E(java.lang.String)'.
+            //  - 'FileNotFoundException': if file doesn't exits.
             var stream_input_file = (InputStream) new FileInputStream(input_files_filepaths[0]);
             // System.out.println(stream_input_file);
             // System.out.println(stream_input_file.getClass().getCanonicalName());                    //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
@@ -187,7 +194,8 @@ public class App {
             // System.out.println(data.getClass().getCanonicalName());                                 //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
             // System.out.println();
             //  [CONFIG. FILES READING] Closes 'InputStream' instance, after reading configuration file.
-            //  [POSSIBLE EXCEPTION - Stops Execution] If there is a general I/O error, it throws a 'IOException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#close()'.
+            //  [POSSIBLE EXCEPTIONS => Stops Execution] 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#close()'.
+            //  - 'IOException': general errors in I/O operations.
             stream_input_file.close();
             var parameters = (Map<String, Object>) data.get("parameters");
             // System.out.println(parameters);
@@ -238,7 +246,8 @@ public class App {
             //  Loads '.yaml' file: secrets.
             System.out.println("-");
             //  [CONFIG. FILES READING] Opens 'InputStream' instance, for reading configuration file.
-            //  [POSSIBLE EXCEPTION - Stops Execution] If file doesn't exits, it throws a 'FileNotFoundException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#%3Cinit%3E(java.lang.String)'..
+            //  [POSSIBLE EXCEPTIONS => Stops Execution] 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#%3Cinit%3E(java.lang.String)'.
+            //  - 'FileNotFoundException': if file doesn't exits.
             var stream_input_file_secrets = (InputStream) new FileInputStream(input_files_filepaths[1]);
             System.out.println("[LOG] Reading '.yaml' file...");
             System.out.println(input_files_filepaths[1]);
@@ -246,7 +255,8 @@ public class App {
             var yaml_secrets = new Yaml();
             var data_secrets = (Map<String, Object>) yaml_secrets.load(stream_input_file_secrets);
             //  [CONFIG. FILES READING] Closes 'InputStream' instance, after reading configuration file.
-            //  [POSSIBLE EXCEPTION - Stops Execution] If there is a general I/O error, it throws a 'IOException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#close()'.
+            //  [POSSIBLE EXCEPTIONS => Stops Execution] 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileInputStream.html#close()'.
+            //  - 'IOException': general errors in I/O operations.
             stream_input_file_secrets.close();
             var secrets = (Map<String, Object>) data_secrets.get("secrets");
             // System.out.println(secrets);
@@ -271,106 +281,171 @@ public class App {
             // System.out.println(key.getClass().getCanonicalName());                                              //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
             // System.out.println();
 
+            //  MAIN APP.
+            System.out.println("-");
+            
+            //  Declare-ONLY attributes (as 'null' or 'empty', according to it's data type), for later re-usal: 'https://www.baeldung.com/java-string-initialization'.
+            String user_input_menu_option_txt;
+            String user_input_menu_option_txt_clean;
+            String user_input_menu_option;
+            String user_input_currency_amount_txt;
+            String user_input_currency_amount_txt_clean;
+            Double user_input_currency_amount;
+            List<?> user_input_currency_options;
+            String user_input_currency_from;
+            String user_input_currency_to;
+            // var user_input_menu_option_txt = (String) null;                                                     //  Initialize 'null' String. As such, any method called on this object, will throw an error.
+            // var user_input_menu_option_txt_clean = (String) null;                                               //  Initialize 'null' String. As such, any method called on this object, will throw an error.
+            // var user_input_menu_option = (String) null;                                                         //  Initialize 'null' String. As such, any method called on this object, will throw an error.
+            // var user_input_currency_amount_txt = (String) null;                                                 //  Initialize 'null' String. As such, any method called on this object, will throw an error.
+            // var user_input_currency_amount_txt_clean = (String) null;                                           //  Initialize 'null' String. As such, any method called on this object, will throw an error.
+            // var user_input_currency_amount = (Double) null;                                                     //  Initialize 'null' Double. As such, any method called on this object, will throw an error.
+            // var user_input_currency_options = (List<?>) new ArrayList<>();                                      //  Initialize an 'empty' ArrayList, to emulate structure from importing YAML files that uses 'Map' class; specifically 'menu_options'.
+            // var user_input_currency_from = (String) null;                                                       //  Initialize 'null' String. As such, any method called on this object, will throw an error.
+            // var user_input_currency_to = (String) null;                                                         //  Initialize 'null' String. As such, any method called on this object, will throw an error.
+
+            //  [USER INPUT] Creates a new 'Scanner' instance for reading user inputs.
+            //  - Note: if mixing methods 'nextLine()' with nextXXX() methods such as 'next()' or 'nextInt()', beware of consuming line separator: 'https://www.reddit.com/r/learnjava/comments/gsffgs/comment/fs4z1ji/', 'https://www.baeldung.com/java-scanner#2nextint-api'.
+            //  - Note: since using approach of Constructor with Stream, there is no Exception that method could throw.
+            var scanner = new Scanner(System.in);
+            // System.out.println(scanner);
+            // System.out.println(scanner.getClass().getCanonicalName());                                          //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+            // System.out.println();
+
+            //  Loop asking user for currency conversion, until user chooses exit; i.e. option '7'.
+            //  - Note: condition for while is using primitive booleans ('boolean'), not wrapper Class 'Boolean'; that's why we're using regular operators.
+            while(is_menu_exit == false) {
+
+                //  2nd nested try-block for Exception handling: 'https://www.geeksforgeeks.org/java/nested-try-blocks-in-exception-handling-in-java/', 'https://www.codingshuttle.com/java-programming-handbook/multiple-and-nested-try-catch/'.
+                //  - In this 2nd nested try-catch block, any error RETURNS TO MAIN MENU, since minimum requirements for execution were met.
+                try {
+
+                    //  Prints MAIN menu, with options for user to choose.
+                    //  - Note: uses 'print', instead of 'println', since menu text already has a new line.
+                    System.out.print(menu);
+                    user_input_menu_option_txt = (String) scanner.nextLine();
+                    // System.out.println(user_input_menu_option_txt);
+                    // System.out.println(user_input_menu_option_txt.getClass().getCanonicalName());               //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+                    // System.out.println();
+
+                    user_input_menu_option_txt_clean = user_input_menu_option_txt.trim();                       //  Cleans user input.
+                    user_input_menu_option = user_input_menu_option_txt_clean;
+                    
+                    //  Evaluates option input from user (after being cleaned).
+                    //  - Using switch-case expressions: 'https://www.baeldung.com/java-switch#1-the-new-switch-expression'.
+                    switch (user_input_menu_option) {
+
+                        //  User needs to make a conversion; i.e. input from '1' to '6'.
+                        case "1", "2", "3", "4", "5", "6" -> {
+
+                            //  Prints currency submenu, to introduce the amount to exchange.
+                            //  - Note: uses 'print', instead of 'println', since menu text already has a new line.
+                            System.out.print(menu_currency);
+                            // user_input_currency_amount = (Double) scanner.nextDouble();
+                            // scanner.nextLine();                                                                 //  Cleans leftover newline, from previous '.nextDouble()'. When mixing 'nextLine()' with others next methods of class 'Scanner', to clear Scanner buffer and clean remaining newline before next 'nextLine()': 'https://www.reddit.com/r/learnjava/comments/gsffgs/comment/fs4z1ji/', 'https://www.quora.com/How-do-you-use-a-scanner-for-a-loop-in-Java'.
+                            user_input_currency_amount_txt = (String) scanner.nextLine();
+                            user_input_currency_amount_txt_clean = user_input_currency_amount_txt.trim();       //  Cleans user input.
+                            //  [POSSIBLE EXCEPTIONS => Returns To Main Menu] 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html#valueOf(java.lang.String)'.
+                            //  - 'NumberFormatException': if input is not a number. 
+                            user_input_currency_amount = Double.valueOf(user_input_currency_amount_txt_clean);
+                            
+                            //  Get currency exchange parameters, from options defined in the menu; e.g. Option '1': USD to ARS.
+                            user_input_currency_options = (List<?>) menu_options
+                                .get(user_input_menu_option);                                                   //  From configuration file structure, parameters for option defined in a Array (converted to ArrayList).
+                            // System.out.println(user_input_currency_options);
+                            // System.out.println(user_input_currency_options.getClass().getCanonicalName());      //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+                            // System.out.println();
+                            user_input_currency_from = (String) user_input_currency_options
+                                .get(0);                                                                        //  'From' currency, at position '0' in ArraList.
+                            // System.out.println(user_input_currency_from);
+                            // System.out.println(user_input_currency_from.getClass().getCanonicalName());         //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+                            // System.out.println();
+                            user_input_currency_to = (String) user_input_currency_options
+                                .get(1);                                                                        //  'To' currency, at position '1' in ArraList.
+                            // System.out.println(user_input_currency_to);
+                            // System.out.println(user_input_currency_to.getClass().getCanonicalName());           //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
+                            // System.out.println();
+
+                            //  Creates a new instance of an API query to retrieve the currency data.
+                            var api_query = new APIQuery();
+                            //  [POSSIBLE EXCEPTIONS => Returns To Main Menu] From CUSTOM implementation:
+                            //  - 'IOException': general errors in I/O operations.
+                            //  - 'InterruptedException': if I/O operation is interrupted.
+                            var currency_api = api_query
+                                .GetCurrencyData(_EXCHANGERATE_API_TOKEN, user_input_currency_from);
+                            var conversion_rate = currency_api.GetConversionRate(user_input_currency_to);
+                            var currency_converted = (Double) (conversion_rate * user_input_currency_amount);
+
+                            System.out.println("El valor '" + user_input_currency_amount + "' [" + user_input_currency_from + "] corresponde al valor final de => '" + currency_converted + "' [" + user_input_currency_to + "].");
+                            System.out.println();
+
+                        }
+                        
+                        //  User wants to leave; i.e. input as '7'.
+                        case "7" -> is_menu_exit = true;
+
+                        //  Wrong input from user.
+                        default -> {
+                            
+                            System.out.println("ERROR: opción no válida. Por favor ingresa una opción disponible del menú.");
+                            System.out.println();
+
+                        }
+
+                    }
+                } catch (JsonSyntaxException e) {
+                    System.out.println("[LOG - ERROR] There was an error while trying to read a malformed JSON after API call. Please review the error message for details:");
+                    System.out.println(e.getMessage());                                                         //  Print error details.
+                    System.out.println();
+                } catch (NumberFormatException e) {
+                    System.out.println("[LOG - ERROR] There was an error while trying to convert a string to a numeric type. Please review the error message for details:");
+                    System.out.println(e.getMessage());                                                         //  Print error details.
+                    System.out.println();
+                } catch (IOException e) {
+                    System.out.println("[LOG - ERROR] Request to API failed; there was a general I/O operation error while connecting to it. Please review the error message for details:");
+                    System.out.println(e.getMessage());                                                         //  Print error details.
+                    System.out.println();
+                } catch (InterruptedException e) {
+                    System.out.println("[LOG - ERROR] Request to API failed; there was an error caused by the interruption of the API call. Please review the error message for details:");
+                    System.out.println(e.getMessage());                                                         //  Print error details.
+                    System.out.println();
+                } catch (Exception e) {
+                    System.out.println("[LOG - ERROR] There was a general error. Please review the error message for details:");
+                    System.out.println(e.getMessage());                                                         //  Print error details.
+                    System.out.println();
+                }
+
+                // System.out.println();
+                
+            }
+
+            //  [USER INPUT] Closes 'Scanner' instance, after reading user input.
+            //  - Note: according to documentation, the '.close()' methods doesn't throw any Exception: 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Scanner.html#close()'.
+            scanner.close();
+
+            System.out.println("[LOG] Exiting main menu... Thank you for using this app!.");
+            System.out.println();
+
         //  Catchs in hierarchical order; from specific to general:
         //  1. 'FileNotFoundException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileNotFoundException.html'.
         //  2. 'IOException': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html'.
         //  3. 'Exception': 'https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html'.
         } catch (FileNotFoundException e) {
-            System.out.println("[LOG - ERROR] There was an error while trying to open a file for reading; please review the error message for details:");
-            System.out.println(e.getMessage());                                                             //  Print error details.
+            System.out.println("[LOG - ERROR] There was an error while trying to open a file for reading. Please review the error message for details:");
+            System.out.println(e.getMessage());                                                                 //  Print error details.
+            System.out.println();
         } catch (IOException e) {
-            System.out.println("[LOG - ERROR] There was general I/O error while trying to close a file after reading it; please review the error message for details:");
-            System.out.println(e.getMessage());                                                             //  Print error details.
+            System.out.println("[LOG - ERROR] There was a general I/O operation error while trying to close a file after reading it. Please review the error message for details:");
+            System.out.println(e.getMessage());                                                                 //  Print error details.
+            System.out.println();
         } catch (Exception e) {
-            System.out.println("[LOG - ERROR] There was a general error; please review the error message for details:");
-            System.out.println(e.getMessage());                                                             //  Print error details.
+            System.out.println("[LOG - ERROR] There was a general error. Please review the error message for details:");
+            System.out.println(e.getMessage());                                                                 //  Print error details.
+            System.out.println();
         }
+
+        System.out.println("[LOG] Finalizing app execution... Thank you for using this app!.");
         System.out.println();
-
-
-
-
-
-
-
-        //  MAIN APP.
-
-        System.out.println("-");
-
-        //  [USER INPUT] Creates a new instance of class 'Scanner' to read user input.
-        //  - Note: if mixing methods 'nextLine()' with nextXXX() methods such as 'next()' or 'nextInt()', beware of consuming line separator: 'https://www.reddit.com/r/learnjava/comments/gsffgs/comment/fs4z1ji/', 'https://www.baeldung.com/java-scanner#2nextint-api'.
-        var scanner = new Scanner(System.in);
-        // System.out.println(scanner.getClass().getCanonicalName());                                          //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
-
-        //  Declare-ONLY attributes (as 'null' or 'empty', according to it's data type), for later re-usal: 'https://www.baeldung.com/java-string-initialization'.
-        var user_input_menu_option = (String) null;                                                         //  Initialize 'null' String. As such, any method called on this object, will throw an error.
-        var user_input_menu_option_clean = (String) null;                                                   //  Initialize 'null' String. As such, any method called on this object, will throw an error.
-        var user_input_currency_amount = (Double) null;                                                     //  Initialize 'null' Double. As such, any method called on this object, will throw an error.
-        var user_input_currency_options = (List<?>) new ArrayList<>();                                      //  Initialize an 'empty' ArrayList, to emulate structure from importing YAML files that uses 'Map' class; specifically 'menu_options'.
-        var user_input_currency_from = (String) null;                                                       //  Initialize 'null' String. As such, any method called on this object, will throw an error.
-        var user_input_currency_to = (String) null;                                                         //  Initialize 'null' String. As such, any method called on this object, will throw an error.
-
-        //  Loop asking user for currency conversion, until user chooses exit; i.e. option '7'.
-        //  - Note: condition for while is using primitive booleans ('boolean'), not wrapper Class 'Boolean'; that's why we're using regular operators.
-        while(is_menu_exit == false) {
-
-            //  Prints MAIN menu, with options for user to choose.
-            //  - Note: uses 'print', instead of 'println', since menu text already has a new line.
-            System.out.print(menu);
-            user_input_menu_option = (String) scanner.nextLine();
-            // System.out.println(user_input_menu_option.getClass().getCanonicalName());                       //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
-
-            user_input_menu_option_clean = user_input_menu_option.trim();
-            
-            //  Evaluates option input from user (after being cleaned).
-            //  - Using switch-case expressions: 'https://www.baeldung.com/java-switch#1-the-new-switch-expression'.
-            switch (user_input_menu_option_clean) {
-
-                //  User needs to make a conversion; i.e. input from '1' to '6'.
-                case "1", "2", "3", "4", "5", "6" -> {
-
-                    //  Prints currency submenu, to introduce the amount to exchange.
-                    //  - Note: uses 'print', instead of 'println', since menu text already has a new line.
-                    System.out.print(menu_currency);
-                    user_input_currency_amount = (Double) scanner.nextDouble();
-                    // System.out.println(user_input_currency_amount.getClass().getCanonicalName());               //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
-                    scanner.nextLine();                                                                         //  Cleans leftover newline, from previous '.nextDouble()'. When mixing 'nextLine()' with others next methods of class 'Scanner', to clear Scanner buffer and clean remaining newline before next 'nextLine()': 'https://www.reddit.com/r/learnjava/comments/gsffgs/comment/fs4z1ji/', 'https://www.quora.com/How-do-you-use-a-scanner-for-a-loop-in-Java'.
-
-                    //  Get currency exchange parameters, from options defined in the menu; e.g. Option '1': USD to ARS.
-                    user_input_currency_options = (List<?>) menu_options.get(user_input_menu_option_clean);     //  From configuration file structure, parameters for option defined in a Array (converted to ArrayList).
-                    // System.out.println(user_input_currency_options.getClass().getCanonicalName());              //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
-                    user_input_currency_from = (String) user_input_currency_options.get(0);                     //  'From' currency, at position '0' in ArraList.
-                    // System.out.println(user_input_currency_from.getClass().getCanonicalName());                 //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
-                    user_input_currency_to = (String) user_input_currency_options.get(1);                       //  'To' currency, at position '1' in ArraList.
-                    // System.out.println(user_input_currency_to.getClass().getCanonicalName());                   //  Get class of an Object; throws error if it's a primitive data type: 'https://www.quora.com/How-do-we-print-the-class-name-as-output-in-Java'.
-
-                    //  Creates a new instance of an API query to retrieve the currency data.
-                    var api_query = new APIQuery();
-                    var currency_api = api_query.GetCurrencyData(_EXCHANGERATE_API_TOKEN, user_input_currency_from);      //  Throws IOException, InterruptedException.
-                    var conversion_rate = currency_api.GetConversionRate(user_input_currency_to);
-                    var currency_converted = (Double) (conversion_rate * user_input_currency_amount);
-                    System.out.println("El valor '" + user_input_currency_amount + "' [" + user_input_currency_from + "] corresponde al valor final de => '" + currency_converted + "' [" + user_input_currency_to + "].");
-                    System.out.println();
-
-                }
-                
-                //  User wants to leave; i.e. input as '7'.
-                case "7" -> is_menu_exit = true;
-
-                //  Wrong input from user.
-                default -> {
-                    
-                    System.out.println("ERROR: opción no válida. Por favor ingresa una opción disponible del menú.");
-                    System.out.println();
-
-                }
-
-            }
-            
-        }
-
-        //  [USER INPUT] Closes 'Scanner' instance, after reading user input.
-        scanner.close();
 
         System.out.println("-");
         System.out.println();
