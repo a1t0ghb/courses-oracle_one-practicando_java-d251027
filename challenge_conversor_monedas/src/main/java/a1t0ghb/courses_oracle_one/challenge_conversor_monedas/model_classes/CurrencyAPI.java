@@ -22,14 +22,13 @@ import java.util.Map;                                               //  [Interfa
  *  CurrencyAPI record (class) documentation.
  *  @param api_result [API default return] API call result: 'success', or 'error'.
  *  @param api_documentation [API default return] Documentation: 'https://www.exchangerate-api.com/docs'.
- *  @param api_terms_of_use_success [api_result = 'success'] Terms of use: 'https://www.exchangerate-api.com/terms'.
+ *  @param api_terms_of_use [API default return] Terms of use: 'https://www.exchangerate-api.com/terms'.
  *  @param api_time_last_update_unix [api_result = 'success'] UNIX timestamp for last time currency rates were updated.
  *  @param api_time_last_update_utc [api_result = 'success'] Datetime (UTC timezone) for last time currency rates were updated.
  *  @param api_time_next_update_unix [api_result = 'success'] UNIX timestamp for next time currency rates to be updated.
  *  @param api_time_next_update_utc [api_result = 'success'] Datetime (UTC timezone) for next time currency rates to be updated.
- *  @param base_code [api_result = 'success'] Currency data requested.
- *  @param conversion_rates [api_result = 'success'] List of exchange rates (as Java Map) for currency requested.
- *  @param api_terms_of_use_error [api_result = 'error'] Terms of use: 'https://www.exchangerate-api.com/terms'.
+ *  @param currency_from [api_result = 'success'] Currency data requested.
+ *  @param api_conversion_rates [api_result = 'success'] List of exchange rates (as Java Map) for currency requested.
  *  @param api_error_type [api_result = 'error'] Error reason returned by API call.
  *  @author a1t0ghb
  */
@@ -45,7 +44,7 @@ public record CurrencyAPI(
     , @SerializedName("conversion_rates") Map<String, Double> api_conversion_rates
     , @SerializedName("error-type") String api_error_type
 ) {
-    //  Introduction to Java records: 'https://www.youtube.com/watch?v=_xIA7vhWkLk', 'https://www.theserverside.com/video/Java-records-tutorial'.
+    //  Introduction to Java records: 'https://docs.oracle.com/en/java/javase/17/language/records.html', 'https://www.youtube.com/watch?v=_xIA7vhWkLk', 'https://www.theserverside.com/video/Java-records-tutorial'.
     //  NOTE: Class parameters come from picking JSON fields, based on HTTP request testing of API; e.g. on Postman or Apidog.
     //  - Test URL: 'https://v6.exchangerate-api.com/v6/<api_token>/latest/USD'.
     //  Example for configuring and using marker '@SerializedName': 'https://javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/com/google/gson/annotations/SerializedName.html'.
