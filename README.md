@@ -199,6 +199,7 @@ classDiagram
     %% Package 'challenge_conversor_monedas.utilities'.
     namespace HOME.utilities {
         class APIQuery ["APIQuery"] {
+            <<Abstract>>
             -String api_url_base
             +GetCurrencyData(String api_token, String currency_from) CurrencyAPI
         }
@@ -232,7 +233,7 @@ classDiagram
 
 Notes:
 
-- Class `App` is the **main class**, which calls first `APIQuery`. The later class is the one **responsible for making API calls** via HTTP requests.
+- Class `App` is the **main class**, which first calls `APIQuery`. The later class is the one **responsible for making API calls** via HTTP requests.
     - Only after a sucessful call to the API, `App` calls methods on the record (class) `CurrencyAPI`.
 - Classes with the word `Tester` at the end, such as `APIQueryTester` and `CurrencyAPITester`, are **exclusively for quick / fast / on-the-go testing** of methods of instances of their corresponding classes.
 - Class `UtilitiesForMapInterface` is just helper class with auxiliary methods related to instances implementing a `Map` Interface.
